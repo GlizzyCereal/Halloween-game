@@ -1,13 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement; 
-using TMPro; 
+using TMPro;
 
-public class Player : MonoBehaviour
+public class Wall : MonoBehaviour
 {
-    public float speed = 5f;
-    private int points = 0;
+    private int points = 000;
     public TextMeshProUGUI pointsText;
 
     void Start()
@@ -17,23 +15,22 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        float move = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
-        transform.Translate(move, 0, 0);
+        points = int.Parse(pointsText.text);
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Candy"))
         {
-            Destroy(collision.gameObject);
-            points += 10;
+            points -= 10;
+            pointsText.text = points.ToString("D3");
+            Debug.Log(points.ToString("D3"));
+
+            Destroy(collision.gameObject, 0.1f);
         }
         else if (collision.gameObject.CompareTag("Poison"))
         {
             Destroy(collision.gameObject);
-            points -= 10;
         }
-
-        pointsText.text = points.ToString("D3");
     }
 }
